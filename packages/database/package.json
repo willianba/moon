@@ -1,0 +1,25 @@
+{
+  "name": "@monorepo/database",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "description": "Database models, types, connections, and migrations",
+  "private": "true",
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    "./*": {
+      "types": "./lib/*.d.ts",
+      "default": "./lib/*.js"
+    },
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    }
+  },
+  "dependencies": {
+    "mongoose": "^8.6.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.4"
+  }
+}

@@ -1,0 +1,17 @@
+# dependencies
+node_modules/
+# build folder
+dist/
+lib/
+# env vars
+.env.keys
+# logs
+logs/
+#files
+**/.DS_Store
+.idea/
+# moon
+.moon/cache
+.moon/docker
+**.tsbuildinfo
+.goose

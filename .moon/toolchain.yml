@@ -1,0 +1,5 @@
+node:
+  version: '22'
+  packageManager: 'pnpm'
+  pnpm:
+    version: '10'

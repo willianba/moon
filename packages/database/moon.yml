@@ -1,0 +1,22 @@
+type: 'library'
+language: 'typescript'
+stack: 'backend'
+
+project:
+  name: 'database'
+  description: 'Database models, types, connections, and migrations'
+
+tasks:
+  dev:
+    local: true
+    command: 'pnpm exec tsc --build --force tsconfig.json --watch'
+    inputs:
+      - 'src'
+    options:
+      envFile: '../../.env'
+  build:
+    command: 'pnpm exec tsc --build'
+    inputs:
+      - 'src'
+    outputs:
+      - 'lib'

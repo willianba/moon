@@ -1,0 +1,26 @@
+type: 'application'
+language: 'typescript'
+stack: 'backend'
+
+project:
+  name: 'webhooks'
+  description: 'Demo app that uses the db from the shared package'
+
+tasks:
+  dev:
+    local: true
+    command: 'pnpm exec dotenvx run -f ../../.env -- tsx watch --clear-screen=false src/index.ts'
+    deps:
+      - 'database:dev'
+    options:
+      envFile: '../../.env'
+  build:
+    inputs:
+      - 'src/**'
+      - 'tsconfig.json'
+      - 'package.json'
+    outputs:
+      - 'dist/**'
+    command: 'pnpm exec tsc --project tsconfig.json'
+    deps:
+      - 'database:build'

@@ -1,0 +1,16 @@
+{
+  "name": "@monorepo/demo",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Demo app that uses the db from the shared package",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "tsx": "^4.19.1"
+  },
+  "dependencies": {
+    "@monorepo/database": "workspace:^",
+    "@hono/node-server": "^1.13.1",
+    "hono": "^4.6.3"
+  }
+}
