@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <script src="https://unpkg.com/htmx.org"></script>
+  <title>HTMX + PicoCSS + EJS tutorial</title>
+</head>
+
+<body class="container">
+  <header id="header">
+    <nav>
+      <ul>
+        <li><strong>HTMX + PicoCSS + EJS tutorial</strong></li>
+      </ul>
+      <ul>
+        <li><a href="/">Home</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section id="tasks"><%- include('partials/task-table.ejs') %></section>
+    <section id="control"><%- include('partials/add-form.ejs') %></section>
+  </main>
+
+  <footer id="footer">
+    <small>Built with <a href="https://htmx.org/">HTMX</a> and
+      <a href="https://picocss.com">PicoCSS</a></small>
+  </footer>
+
+  <style>
+    #main {
+      display: flex;
+      gap: 1rem;
+    }
+
+    #tasks {
+      flex-basis: 60%;
+    }
+
+    #control {
+      flex-basis: 40%;
+    }
+
+    #footer {
+      text-align: right;
+    }
+
+    /* Transition styles for tasks */
+    .task,
+    #form {
+      opacity: 1;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .task.htmx-added,
+    #form.htmx-added {
+      opacity: 0;
+    }
+
+    .task.htmx-swapping,
+    #form.htmx-swapping {
+      opacity: 0;
+    }
+  </style>
+</body>
+
+<script>
+  const handleRequest = (event) => {
+    const {target, requestConfig, xhr} = event.detail
+
+    if (xhr.status === 200) {
+      // To avoid swaps as a result of requests that aren't "PUT" aka edits
+      if (requestConfig.verb === 'put') {
+        return swapToAddForm()
+      }
+    }
+  }
+
+  const swapToAddForm = () => {
+    htmx.ajax('GET', '/html/add-form', {
+      target: '#form',
+      swap: 'outerHTML swap:0.5s',
+    })
+  }
+
+  // Listen for the afterRequest event
+  document.body.addEventListener('htmx:afterRequest', handleRequest)
+</script>
+
+</html>

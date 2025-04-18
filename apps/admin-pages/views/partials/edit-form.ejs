@@ -1,0 +1,17 @@
+<form id="form" hx-put="/tasks/<%= task.id %>" hx-target="#task-<%= task.id %>" hx-swap="outerHTML">
+  <article>
+    <header>
+      <strong>Editing <%= task.title %> (ID: <%= task.id %>)</strong>
+    </header>
+
+    <label for="name">Task Name</label>
+    <input type="text" name="name" placeholder="Name" value="<%= task.name %>" required />
+    <small id="name-helper">Enter the name of the task.</small>
+
+    <footer style="display: flex; gap: 0.5rem">
+      <button role="group" style="justify-content: center" class="secondary" hx-get="/html/add-form" hx-target="#form"
+        hx-swap="outerHTML swap:0.5s">Cancel</button>
+      <button role="group" style="justify-content: center" type="submit">Submit</button>
+    </footer>
+  </article>
+</form>

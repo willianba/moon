@@ -1,5 +1,3 @@
-/* eslint-disable no-magic-numbers */
-
 import { Hono } from 'hono';
 import { serve } from '@hono/node-server';
 import loadDb from '@monorepo/database';

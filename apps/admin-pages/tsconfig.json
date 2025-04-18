@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.options.json",
+  "compilerOptions": {
+    "outDir": "../../.moon/cache/types/apps/admin-pages",
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "dist/**/*"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.build.json"
+    }
+  ]
+}

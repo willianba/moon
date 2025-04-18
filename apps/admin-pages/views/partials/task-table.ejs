@@ -1,0 +1,11 @@
+<table id="tasks-table">
+  <thead>
+    <tr>
+      <th scope="col" style="width: 80%">Name</th>
+      <th scope="col" style="width: 20%">Actions</th>
+    </tr>
+  </thead>
+  <tbody id="tasks-body">
+    <% tasks.forEach(task => { %> <%- include('task.ejs', {task: task}) %> <% }); %>
+  </tbody>
+</table>

@@ -7,6 +7,7 @@ module.exports = {
 		'@typescript-eslint/no-unsafe-member-access': 'off',
 		'@typescript-eslint/no-unsafe-assignment': 'off',
 		'sort-keys': 'off',
+		'no-magic-numbers': 'off',
 	},
 	// TypeScript support
 	parser: '@typescript-eslint/parser',

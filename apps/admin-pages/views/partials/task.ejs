@@ -1,0 +1,12 @@
+<tr id="task-<%= task.id %>" class="task">
+  <td>
+    <%= task.name %>
+  </td>
+  <td>
+    <div style="display: flex; gap: 0.25rem">
+      <button hx-get="/html/edit-form/<%= task.id %>" hx-swap="outerHTML swap:0.5s" hx-target="#form">Edit</button>
+      <button class="secondary" hx-delete="/tasks/<%= task.id %>" hx-target="closest tr"
+        hx-swap="outerHTML swap:0.5s">Delete</button>
+    </div>
+  </td>
+</tr>
