@@ -1,0 +1,24 @@
+{
+  "name": "@moon/shared",
+  "version": "1.0.0",
+  "description": "Shared Zod schemas, types, and utilities",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./schemas": {
+      "types": "./src/schemas/index.ts",
+      "default": "./src/schemas/index.ts"
+    }
+  },
+  "dependencies": {
+    "zod": "^3.25.51"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}

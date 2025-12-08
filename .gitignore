@@ -1,17 +1,27 @@
 # dependencies
 node_modules/
-# build folder
+
+# build folders
 dist/
-lib/
+build/
+.svelte-kit/
+
 # env vars
+.env
+.env.local
+.env.*.local
 .env.keys
+
 # logs
 logs/
-#files
+
+# files
 **/.DS_Store
 .idea/
+
 # moon
 .moon/cache
 .moon/docker
 **.tsbuildinfo
 .goose
+.serena/

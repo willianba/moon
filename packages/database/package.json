@@ -1,25 +1,37 @@
 {
-  "name": "@monorepo/database",
+  "name": "@moon/database",
   "version": "1.0.0",
-  "main": "src/index.ts",
-  "description": "Database models, types, connections, and migrations",
-  "private": "true",
+  "description": "Database schema, client, and migrations using Drizzle + PostgreSQL",
+  "private": true,
   "type": "module",
   "exports": {
     "./package.json": "./package.json",
-    "./*": {
-      "types": "./lib/*.d.ts",
-      "default": "./lib/*.js"
-    },
     ".": {
-      "types": "./lib/index.d.ts",
-      "default": "./lib/index.js"
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./schema": {
+      "types": "./src/schema/index.ts",
+      "default": "./src/schema/index.ts"
+    },
+    "./client": {
+      "types": "./src/client.ts",
+      "default": "./src/client.ts"
     }
   },
+  "scripts": {
+    "check": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio"
+  },
   "dependencies": {
-    "mongoose": "^8.6.4"
+    "drizzle-orm": "0.44.2",
+    "postgres": "^3.4.7"
   },
   "devDependencies": {
-    "@types/node": "^22.7.4"
+    "@types/bun": "latest",
+    "drizzle-kit": "0.30.6"
   }
 }

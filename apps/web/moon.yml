@@ -1,0 +1,57 @@
+type: "application"
+language: "typescript"
+stack: "frontend"
+
+project:
+  name: "web"
+  description: "SvelteKit + Hono web application"
+
+dependsOn:
+  - "database"
+  - "shared"
+  - "workers"
+
+tasks:
+  dev:
+    command: "bun run dev"
+    local: true
+    options:
+      envFile: "/.env"
+
+  build:
+    command: "bun run build"
+    inputs:
+      - "src/**/*"
+      - "static/**/*"
+      - "svelte.config.js"
+      - "vite.config.ts"
+      - "tsconfig.json"
+    outputs:
+      - "build"
+    deps:
+      - "database:typecheck"
+      - "shared:typecheck"
+    options:
+      runInCI: true
+      envFile: "/.env"
+
+  preview:
+    command: "bun run preview"
+    local: true
+    deps:
+      - "~:build"
+
+  check:
+    command: "bun run check"
+    inputs:
+      - "src/**/*"
+    options:
+      runInCI: true
+
+  start:
+    command: "bun ./build/index.js"
+    local: true
+    deps:
+      - "~:build"
+    options:
+      envFile: true

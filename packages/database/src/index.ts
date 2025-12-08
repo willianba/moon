@@ -1,17 +1,22 @@
-import mongoose from 'mongoose';
-import { User } from './user.js';
+// Client exports
 
-const models = [User];
-
-const loadDb = async () => {
-	const dbConnection = await mongoose.connect(process.env.DATABASE_URL!);
-
-	for (const model of Object.values(models)) {
-		// eslint-disable-next-line no-await-in-loop
-		await model.createCollection();
-	}
-
-	return dbConnection;
-};
-
-export default loadDb;
+// Re-export commonly used drizzle-orm utilities
+export {
+  and,
+  eq,
+  gt,
+  gte,
+  inArray,
+  isNotNull,
+  isNull,
+  lt,
+  lte,
+  ne,
+  not,
+  notInArray,
+  or,
+  sql,
+} from "drizzle-orm";
+export { createMigrationClient, type Database, db } from "./client.js";
+// Schema exports
+export * from "./schema/index.js";

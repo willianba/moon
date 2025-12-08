@@ -3,10 +3,16 @@
   "files": [],
   "references": [
     {
-      "path": "apps/webhooks"
+      "path": "apps/web"
+    },
+    {
+      "path": "apps/workers"
     },
     {
       "path": "packages/database"
+    },
+    {
+      "path": "packages/shared"
     }
   ]
 }

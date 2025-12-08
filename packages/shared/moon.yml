@@ -1,0 +1,7 @@
+type: 'library'
+language: 'typescript'
+stack: 'unknown'
+
+project:
+  name: 'shared'
+  description: 'Shared Zod schemas, types, and utilities'

@@ -1,8 +1,12 @@
 {
   "extends": "tsconfig-moon/tsconfig.projects.json",
   "compilerOptions": {
-    "moduleResolution": "nodenext",
-    "module": "nodenext",
-    "emitDeclarationOnly": false
+    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "target": "ESNext",
+    "emitDeclarationOnly": false,
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true
   }
 }
