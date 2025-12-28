@@ -1,9 +1,9 @@
 import { Hono } from "hono";
-import { logger } from "hono/logger";
 import { cors } from "hono/cors";
 import { HTTPException } from "hono/http-exception";
+import { logger } from "hono/logger";
 import { rateLimiter } from "./middleware";
-import { usersRoute, healthRoute, jobsRoute } from "./routes/index";
+import { healthRoute, jobsRoute, usersRoute } from "./routes/index";
 
 // Create the main Hono app
 const app = new Hono().basePath("/api");
@@ -26,9 +26,7 @@ app.onError((err, c) => {
 });
 
 // Handle 404s
-app.notFound((c) => {
-  return c.json({ success: false, error: "Not found" }, 404);
-});
+app.notFound((c) => c.json({ success: false, error: "Not found" }, 404));
 
 // Global middleware
 app.use("*", logger());
@@ -40,7 +38,7 @@ app.use(
   rateLimiter({
     windowMs: 60 * 1000,
     max: 100,
-  }),
+  })
 );
 
 // Mount routes

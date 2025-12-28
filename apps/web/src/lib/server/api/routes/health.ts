@@ -1,5 +1,5 @@
-import { Hono } from "hono";
 import { db, sql } from "@moon/database";
+import { Hono } from "hono";
 
 export const healthRoute = new Hono()
   .get("/", async (c) => {
@@ -21,10 +21,8 @@ export const healthRoute = new Hono()
         timestamp: new Date().toISOString(),
         checks,
       },
-      healthy ? 200 : 503,
+      healthy ? 200 : 503
     );
   })
   // Simple liveness probe (no dependencies check)
-  .get("/live", (c) => {
-    return c.json({ status: "ok" });
-  });
+  .get("/live", (c) => c.json({ status: "ok" }));

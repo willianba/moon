@@ -1,7 +1,7 @@
-import { Hono } from 'hono';
-import { zValidator } from '@hono/zod-validator';
-import { z } from '@moon/shared';
-import { emailQueue } from '@moon/workers/queues';
+import { zValidator } from "@hono/zod-validator";
+import { z } from "@moon/shared";
+import { emailQueue } from "@moon/workers/queues";
+import { Hono } from "hono";
 
 const sendEmailSchema = z.object({
   to: z.string().email(),
@@ -11,28 +11,31 @@ const sendEmailSchema = z.object({
 
 export const jobsRoute = new Hono()
   // POST /api/jobs/email - Queue an email job
-  .post('/email', zValidator('json', sendEmailSchema), async (c) => {
-    const data = c.req.valid('json');
+  .post("/email", zValidator("json", sendEmailSchema), async (c) => {
+    const data = c.req.valid("json");
 
-    const job = await emailQueue.add('send-email', data);
+    const job = await emailQueue.add("send-email", data);
 
-    return c.json({
-      success: true,
-      data: {
-        jobId: job.id,
-        name: job.name,
-        data: job.data,
+    return c.json(
+      {
+        success: true,
+        data: {
+          jobId: job.id,
+          name: job.name,
+          data: job.data,
+        },
       },
-    }, 201);
+      201
+    );
   })
 
   // GET /api/jobs/email/:id - Get job status
-  .get('/email/:id', async (c) => {
-    const jobId = c.req.param('id');
+  .get("/email/:id", async (c) => {
+    const jobId = c.req.param("id");
     const job = await emailQueue.getJob(jobId);
 
     if (!job) {
-      return c.json({ success: false, error: 'Job not found' }, 404);
+      return c.json({ success: false, error: "Job not found" }, 404);
     }
 
     const state = await job.getState();

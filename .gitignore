@@ -2,8 +2,9 @@
 node_modules/
 
 # build folders
-dist/
-build/
+packages/*/lib/
+**/dist/
+**/build/
 .svelte-kit/
 
 # env vars
