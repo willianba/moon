@@ -17,6 +17,6 @@ export {
   or,
   sql,
 } from "drizzle-orm";
-export { createMigrationClient, type Database, db } from "./client.js";
+export { createMigrationClient, type Database, db } from "./client";
 // Schema exports
-export * from "./schema/index.js";
+export * from "./schema";

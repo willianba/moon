@@ -1,32 +1,32 @@
-type: 'library'
-language: 'typescript'
-stack: 'backend'
+type: "library"
+language: "typescript"
+stack: "backend"
 
 project:
-  name: 'database'
-  description: 'Database schema, client, and migrations using Drizzle + PostgreSQL'
+  name: "database"
+  description: "Database schema, client, and migrations using Drizzle + PostgreSQL"
 
 tasks:
   db-generate:
-    command: 'bunx drizzle-kit generate'
+    command: "bunx drizzle-kit generate"
     local: true
     options:
-      envFile: '/.env'
+      envFile: "/.env"
 
   db-migrate:
-    command: 'bunx drizzle-kit migrate'
+    command: "bunx drizzle-kit migrate"
     local: true
     options:
-      envFile: '/.env'
+      envFile: "/.env"
 
   db-push:
-    command: 'bunx drizzle-kit push'
+    command: "bunx drizzle-kit push"
     local: true
     options:
-      envFile: '/.env'
+      envFile: "/.env"
 
   db-studio:
-    command: 'bunx drizzle-kit studio'
+    command: "bunx drizzle-kit studio"
     local: true
     options:
-      envFile: '/.env'
+      envFile: "/.env"
