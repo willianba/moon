@@ -15,19 +15,6 @@ type RateLimitEntry = {
 // In-memory store - for production with multiple instances, use Redis
 const store = new Map<string, RateLimitEntry>();
 
-// Cleanup old entries periodically
-const cleanup = () => {
-  const now = Date.now();
-  for (const [key, entry] of store.entries()) {
-    if (now > entry.resetTime) {
-      store.delete(key);
-    }
-  }
-};
-
-// Run cleanup every minute
-setInterval(cleanup, 60_000);
-
 const defaultKeyGenerator = (c: Context): string =>
   c.req.header("x-forwarded-for") || c.req.header("x-real-ip") || "anonymous";
 
@@ -40,8 +27,16 @@ export const rateLimiter = (options: RateLimitOptions): MiddlewareHandler => {
   } = options;
 
   return async (c, next) => {
-    const key = keyGenerator(c);
+    // Clean up expired entries
     const now = Date.now();
+    // biome-ignore lint/nursery/noShadow: noop
+    for (const [key, entry] of store.entries()) {
+      if (now > entry.resetTime) {
+        store.delete(key);
+      }
+    }
+
+    const key = keyGenerator(c);
     const entry = store.get(key);
 
     if (!entry || now > entry.resetTime) {

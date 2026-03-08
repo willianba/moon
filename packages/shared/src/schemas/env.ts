@@ -8,4 +8,17 @@ export const envSchema = z.object({
 
 export type EnvSchema = z.infer<typeof envSchema>;
 
-export const env: EnvSchema = envSchema.parse(process.env);
+let _parsed: EnvSchema | null = null;
+
+const getEnv = (): EnvSchema => {
+  if (!_parsed) {
+    _parsed = envSchema.parse(process.env);
+  }
+  return _parsed;
+};
+
+export const env: EnvSchema = new Proxy({} as EnvSchema, {
+  get(_, prop: string) {
+    return getEnv()[prop as keyof EnvSchema];
+  },
+});

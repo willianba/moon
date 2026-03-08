@@ -38,7 +38,7 @@ export const usersRoute = new Hono()
 
       const [user] = await db
         .update(users)
-        .set({ ...data, updatedAt: new Date() })
+        .set(data)
         .where(eq(users.id, id))
         .returning();
 

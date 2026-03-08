@@ -9,7 +9,6 @@ project:
 dependsOn:
   - "database"
   - "shared"
-  - "workers"
 
 tasks:
   dev:

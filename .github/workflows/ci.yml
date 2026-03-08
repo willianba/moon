@@ -58,6 +58,9 @@ jobs:
       - name: Run type check
         run: moon :typecheck
 
+      - name: Run Svelte check
+        run: moon web:check
+
   build:
     name: Build
     runs-on: ubuntu-latest
