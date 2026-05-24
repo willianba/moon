@@ -1,7 +1,7 @@
 {
   "name": "@moon/web",
   "version": "1.0.0",
-  "description": "SvelteKit + Hono web application",
+  "description": "SvelteKit web application",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,11 +12,9 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
   },
   "dependencies": {
-    "@hono/zod-validator": "^0.8.0",
     "@moon/database": "workspace:*",
     "@moon/shared": "workspace:*",
-    "@moon/workers": "workspace:*",
-    "hono": "^4.12.22"
+    "@moon/workers": "workspace:*"
   },
   "devDependencies": {
     "svelte-adapter-bun": "^1.0.1",

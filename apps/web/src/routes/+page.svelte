@@ -7,10 +7,7 @@
   async function checkHealth() {
     loading = true;
     try {
-      const res = await api.api.health.$get();
-      if (res.ok) {
-        health = await res.json();
-      }
+      health = await api.health.get();
     } catch (e) {
       console.error("Health check failed:", e);
     } finally {
@@ -32,8 +29,7 @@
     <div class="max-w-md">
       <h1 class="text-5xl font-bold">Welcome to Moon</h1>
       <p class="py-6">
-        A modern web application built with SvelteKit, Hono, Tailwind CSS 4, and
-        DaisyUI 5.
+        A modern web application built with SvelteKit, Tailwind CSS 4, and DaisyUI 5.
       </p>
       <div class="flex flex-col gap-4 items-center">
         <a href="/users" class="btn btn-primary">Manage Users</a>

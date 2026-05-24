@@ -1,1 +1,6 @@
-export { api, createApiClient } from "./api";
+export {
+  api,
+  createApiClient,
+  type HealthResponse,
+  type UserResponse,
+} from "./api";

@@ -4,7 +4,7 @@ stack: "frontend"
 
 project:
   title: "web"
-  description: "SvelteKit + Hono web application"
+  description: "SvelteKit web application"
 
 dependsOn:
   - "database"

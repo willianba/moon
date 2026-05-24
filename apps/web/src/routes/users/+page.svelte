@@ -1,14 +1,7 @@
 <script lang="ts">
-  import { api } from "$lib";
 
-  // JSON serialized user type (dates come as strings over the wire)
-  type UserResponse = {
-    id: string;
-    email: string;
-    name: string;
-    createdAt: string;
-    updatedAt: string;
-  };
+  import type { UserResponse } from "$lib";
+  import { api } from "$lib";
 
   let users = $state<UserResponse[]>([]);
   let loading = $state(true);
@@ -18,13 +11,8 @@
   async function fetchUsers() {
     loading = true;
     try {
-      const res = await api.api.users.$get();
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success && data.data) {
-          users = data.data;
-        }
-      }
+      const data = await api.users.list();
+      users = data.data ?? [];
     } catch (e) {
       console.error("Failed to fetch users:", e);
     } finally {
@@ -34,14 +22,10 @@
 
   async function createUser() {
     try {
-      const res = await api.api.users.$post({
-        json: newUser,
-      });
-      if (res.ok) {
-        newUser = { email: "", name: "" };
-        showModal = false;
-        await fetchUsers();
-      }
+      await api.users.create(newUser);
+      newUser = { email: "", name: "" };
+      showModal = false;
+      await fetchUsers();
     } catch (e) {
       console.error("Failed to create user:", e);
     }
@@ -50,12 +34,8 @@
   async function deleteUser(id: string) {
     if (!confirm("Are you sure you want to delete this user?")) return;
     try {
-      const res = await api.api.users[":id"].$delete({
-        param: { id },
-      });
-      if (res.ok) {
-        await fetchUsers();
-      }
+      await api.users.remove(id);
+      await fetchUsers();
     } catch (e) {
       console.error("Failed to delete user:", e);
     }
