@@ -110,7 +110,7 @@ moonx web:preview
 moonx web:start
 ```
 
-`moonx web:start` requires a valid `.env` file because the shared env schema validates `DATABASE_URL`, `REDIS_URL`, and `PUBLIC_API_URL` at runtime.
+`moonx web:start` requires a valid `.env` file because the shared env schema validates their values at runtime.
 
 ### Database
 

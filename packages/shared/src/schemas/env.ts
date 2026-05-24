@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 export const envSchema = z.object({
-  PUBLIC_API_URL: z.url(),
   REDIS_URL: z.url(),
   POSTGRES_HOST: z.string(),
   POSTGRES_PORT: z.string(),

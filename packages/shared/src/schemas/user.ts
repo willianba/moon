@@ -2,8 +2,8 @@ import { z } from "zod";
 
 // User schemas
 export const userSchema = z.object({
-  id: z.string().uuid(),
-  email: z.string().email(),
+  id: z.uuid(),
+  email: z.email(),
   name: z.string().min(1).max(255),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
