@@ -1,16 +1,16 @@
 import type { Context, MiddlewareHandler } from "hono";
 
-type RateLimitOptions = {
-  windowMs: number;
+interface RateLimitOptions {
+  keyGenerator?: (c: Context) => string;
   max: number;
   message?: string;
-  keyGenerator?: (c: Context) => string;
-};
+  windowMs: number;
+}
 
-type RateLimitEntry = {
+interface RateLimitEntry {
   count: number;
   resetTime: number;
-};
+}
 
 // In-memory store - for production with multiple instances, use Redis
 const store = new Map<string, RateLimitEntry>();
@@ -29,7 +29,6 @@ export const rateLimiter = (options: RateLimitOptions): MiddlewareHandler => {
   return async (c, next) => {
     // Clean up expired entries
     const now = Date.now();
-    // biome-ignore lint/nursery/noShadow: noop
     for (const [key, entry] of store.entries()) {
       if (now > entry.resetTime) {
         store.delete(key);

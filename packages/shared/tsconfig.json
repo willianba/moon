@@ -1,7 +1,8 @@
 {
   "extends": "../../tsconfig.options.json",
   "compilerOptions": {
-    "outDir": "../../.moon/cache/types/packages/shared"
+    "outDir": "../../.moon/cache/types/packages/shared",
+    "strictNullChecks": true
   },
   "include": ["src/**/*"]
 }

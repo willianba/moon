@@ -1,131 +1,140 @@
 # Moon Monorepo
 
-A full-stack monorepo using [moonrepo](https://moonrepo.dev) for task orchestration.
+A full-stack Bun monorepo using [moonrepo](https://moonrepo.dev) for task orchestration.
 
 ## Stack
 
-- **Runtime**: Bun 1.2+
+- **Runtime**: Bun 1.3+
 - **Monorepo**: moonrepo 1.41+
 - **Frontend**: SvelteKit + Svelte 5 + Tailwind 4 + DaisyUI 5
-- **API**: Hono (mounted in SvelteKit via hooks.server.ts)
+- **API**: Hono
 - **Database**: PostgreSQL 17 + Drizzle ORM
 - **Queue**: Redis 7 + BullMQ
-- **Validation**: Zod 3
+- **Validation**: Zod 4
 - **Linting**: Biome + Ultracite
+
+## Prerequisites
+
+- Bun 1.3+
+- Moon CLI 1.41+
+- Docker Engine with `docker compose`
+
+## Setup
+
+```bash
+# install dependencies
+bun install
+
+# start local postgres + redis
+docker compose up -d
+
+# create local environment file
+cp .env.example .env
+```
+
+Then configure `.env`:
+
+```env
+DATABASE_URL=postgres://postgres:postgres@localhost:5432/moon
+REDIS_URL=redis://localhost:6379
+PUBLIC_API_URL=http://localhost:5173
+```
 
 ## Structure
 
-```
-.moon/                  # Moon configuration
-  tasks.yml             # Global tasks (lint, format, typecheck)
-  toolchain.yml         # Bun version
+```text
+.moon/                  # Moon workspace + shared task configuration
+  tasks.yml             # Global lint / format / typecheck tasks
+  toolchains.yml        # Bun toolchain configuration
   workspace.yml         # Project discovery
 apps/
   web/                  # SvelteKit + Hono app
   workers/              # BullMQ workers
 packages/
   database/             # Drizzle + PostgreSQL
-  shared/               # Zod schemas, types
+  shared/               # Shared schemas, types, utilities
 ```
 
-## Commands
-
-### Running Tasks
+## Command model
 
 ```bash
-# Run a task on a specific project
+# run a task in one project
 moon <project>:<task>
 
-# Run a task on all projects
+# run the same task across all projects
 moon :<task>
+```
+
+Global shared tasks live in `.moon/tasks.yml`.
+Project-specific tasks live in `<project>/moon.yml`.
+
+## Verified commands
+
+These commands were verified from the repo root.
+
+### Quality
+
+```bash
+# format all projects
+moon :format
+
+# lint with fixes where possible
+moon :lint
+
+# CI-style linting
+moon :lint-ci
+
+# typecheck all projects
+moon :typecheck
+
+# root ultracite wrappers
+bun run check
+bun run fix
 ```
 
 ### Development
 
 ```bash
-# Start web app in dev mode
+# start the web app
 moon web:dev
 
-# Start workers in dev mode (with --watch)
+# start workers in watch mode
 moon workers:dev
+
+# run Svelte checks
+moon web:check
 ```
 
-### Linting & Formatting
+### Build
 
 ```bash
-# Lint + format all projects (with auto-fix)
-moon :lint
-
-# Lint for CI (no auto-fix, fails on errors)
-moon :lint-ci
-
-# Format only (no linting)
-moon :format
-```
-
-### Type Checking
-
-```bash
-# Type check all projects
-moon :typecheck
-```
-
-### Building
-
-```bash
-# Build the web app
+# build the web app
 moon web:build
 
-# Preview the production build
+# preview the production build
 moon web:preview
 
-# Start production server
+# start the production build
 moon web:start
 ```
+
+`moon web:start` requires a valid `.env` file because the shared env schema validates `DATABASE_URL`, `REDIS_URL`, and `PUBLIC_API_URL` at runtime.
+
+`moon web:build` currently completes successfully, but the build prints unresolved Node builtin import warnings coming from server-side dependencies like `postgres`, `ioredis`, and `bullmq`.
 
 ### Database
 
 ```bash
-# Push schema changes to database
 moon database:db-push
-
-# Generate migrations
 moon database:db-generate
-
-# Run migrations
 moon database:db-migrate
-
-# Open Drizzle Studio
 moon database:db-studio
 ```
 
-## Infrastructure
+These commands also require `.env` to be present and valid.
 
-### Start Services
+## Notes
 
-```bash
-docker-compose up -d
-```
-
-This starts:
-- PostgreSQL on port 5432
-- Redis on port 6379
-
-### Environment Variables
-
-Copy `.env.example` to `.env` and configure:
-
-```env
-DATABASE_URL=postgres://postgres:postgres@localhost:5432/moon
-REDIS_URL=redis://localhost:6379
-```
-
-## Architecture
-
-- Settings dependencies and shared configs stay in the root
-- Every config, adapter, lib, db, or reusable code lives in a package
-- Every app reuses stuff from packages
-
-Instead of `scripts` in package.json, we use:
-- `.moon/tasks.yml` - Global shared tasks (lint, format, typecheck)
-- `<project>/moon.yml` - Project-specific tasks and metadata
+- There are currently no test files in the repository.
+- The pre-commit hook runs `lint-staged` only.
+- Root scripts are thin wrappers around Ultracite, while Moon tasks are the main workflow for project commands.

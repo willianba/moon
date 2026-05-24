@@ -16,8 +16,8 @@ export const emailQueue = new Queue("email", {
 });
 
 // Types for email jobs
-export type SendEmailJob = {
-  to: string;
-  subject: string;
+export interface SendEmailJob {
   body: string;
-};
+  subject: string;
+  to: string;
+}
