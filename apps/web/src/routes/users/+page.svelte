@@ -1,49 +1,24 @@
 <script lang="ts">
+  import { enhance } from "$app/forms";
+  import type { PageProps } from "./$types";
 
-  import type { UserResponse } from "$lib";
-  import { api } from "$lib";
+  let { data, form }: PageProps = $props();
 
-  let users = $state<UserResponse[]>([]);
-  let loading = $state(true);
-  let newUser = $state({ email: "", name: "" });
   let showModal = $state(false);
+  let name = $state("");
+  let email = $state("");
 
-  async function fetchUsers() {
-    loading = true;
-    try {
-      const data = await api.users.list();
-      users = data.data ?? [];
-    } catch (e) {
-      console.error("Failed to fetch users:", e);
-    } finally {
-      loading = false;
-    }
+  function openModal() {
+    name = "";
+    email = "";
+    showModal = true;
   }
 
-  async function createUser() {
-    try {
-      await api.users.create(newUser);
-      newUser = { email: "", name: "" };
-      showModal = false;
-      await fetchUsers();
-    } catch (e) {
-      console.error("Failed to create user:", e);
-    }
+  function closeModal() {
+    showModal = false;
+    name = "";
+    email = "";
   }
-
-  async function deleteUser(id: string) {
-    if (!confirm("Are you sure you want to delete this user?")) return;
-    try {
-      await api.users.remove(id);
-      await fetchUsers();
-    } catch (e) {
-      console.error("Failed to delete user:", e);
-    }
-  }
-
-  $effect(() => {
-    fetchUsers();
-  });
 </script>
 
 <svelte:head>
@@ -52,16 +27,10 @@
 
 <div class="flex justify-between items-center mb-6">
   <h1 class="text-3xl font-bold">Users</h1>
-  <button class="btn btn-primary" onclick={() => (showModal = true)}>
-    Add User
-  </button>
+  <button class="btn btn-primary" onclick={openModal}>Add User</button>
 </div>
 
-{#if loading}
-  <div class="flex justify-center py-12">
-    <span class="loading loading-spinner loading-lg"></span>
-  </div>
-{:else if users.length === 0}
+{#if data.users.length === 0}
   <div class="alert alert-info">
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -90,13 +59,18 @@
         </tr>
       </thead>
       <tbody>
-        {#each users as user}
+        {#each data.users as user (user.id)}
           <tr>
             <td>{user.name}</td>
             <td>{user.email}</td>
             <td>{new Date(user.createdAt).toLocaleDateString()}</td>
             <td>
-              <button class="btn btn-error btn-sm" onclick={() => deleteUser(user.id)}>Delete</button>
+              <form method="POST" action="?/delete" use:enhance>
+                <input type="hidden" name="id" value={user.id} />
+                <button type="submit" class="btn btn-error btn-sm">
+                  Delete
+                </button>
+              </form>
             </td>
           </tr>
         {/each}
@@ -105,23 +79,40 @@
   </div>
 {/if}
 
-<!-- Add User Modal -->
 <dialog class="modal" class:modal-open={showModal}>
   <div class="modal-box">
     <h3 class="font-bold text-lg">Add New User</h3>
-    <form onsubmit={(e) => { e.preventDefault(); createUser(); }}>
+
+    {#if form?.error}
+      <div class="alert alert-error mt-2">
+        <span>{form.error}</span>
+      </div>
+    {/if}
+
+    <form
+      method="POST"
+      action="?/create"
+      use:enhance={() =>
+        async ({ result, update }) => {
+          if (result.type === "success") {
+            closeModal();
+          }
+          await update({ reset: false });
+        }}
+    >
       <div class="form-control w-full mt-4">
         <label class="label" for="name">
           <span class="label-text">Name</span>
         </label>
         <input
           id="name"
+          name="name"
           type="text"
           placeholder="John Doe"
           class="input input-bordered w-full"
-          bind:value={newUser.name}
+          bind:value={name}
           required
-        >
+        />
       </div>
       <div class="form-control w-full mt-4">
         <label class="label" for="email">
@@ -129,22 +120,21 @@
         </label>
         <input
           id="email"
+          name="email"
           type="email"
           placeholder="john@example.com"
           class="input input-bordered w-full"
-          bind:value={newUser.email}
+          bind:value={email}
           required
-        >
+        />
       </div>
       <div class="modal-action">
-        <button type="button" class="btn" onclick={() => (showModal = false)}>
-          Cancel
-        </button>
+        <button type="button" class="btn" onclick={closeModal}>Cancel</button>
         <button type="submit" class="btn btn-primary">Create</button>
       </div>
     </form>
   </div>
   <form method="dialog" class="modal-backdrop">
-    <button type="button" onclick={() => (showModal = false)}>close</button>
+    <button type="button" onclick={closeModal}>close</button>
   </form>
 </dialog>

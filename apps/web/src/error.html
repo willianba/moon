@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>%sveltekit.status% - Moon</title>
+    <style>
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        font-family: sans-serif;
+        color: #a6adbb;
+        background: #1d232a;
+      }
+      .container {
+        text-align: center;
+      }
+      h1 {
+        margin: 0 0 1rem;
+        font-size: 4rem;
+        font-weight: bold;
+        color: #ffffff;
+      }
+      p {
+        margin: 0 0 2rem;
+      }
+      a {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        color: #ffffff;
+        text-decoration: none;
+        background: #570df8;
+        border-radius: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>%sveltekit.status%</h1>
+      <p>%sveltekit.error.message%</p>
+      <a href="/">Go Home</a>
+    </div>
+  </body>
+</html>
