@@ -1,9 +1,9 @@
-type: "application"
+layer: "application"
 language: "typescript"
 stack: "frontend"
 
 project:
-  name: "web"
+  title: "web"
   description: "SvelteKit + Hono web application"
 
 dependsOn:
@@ -13,7 +13,7 @@ dependsOn:
 tasks:
   dev:
     command: "bun run dev"
-    local: true
+    preset: server
     options:
       envFile: "/.env"
 
@@ -36,7 +36,7 @@ tasks:
 
   preview:
     command: "bun run preview"
-    local: true
+    preset: server
     deps:
       - "~:build"
 
@@ -49,7 +49,7 @@ tasks:
 
   start:
     command: "bun ./build/index.js"
-    local: true
+    preset: server
     deps:
       - "~:build"
     options:

@@ -1,0 +1,51 @@
+$schema: "https://moonrepo.dev/schemas/tasks.json"
+
+fileGroups:
+  sources:
+    - "src/**/*"
+    - "tests/**/*"
+  configs:
+    - "*.config.*"
+    - "tsconfig.json"
+    - "tsconfig.*.json"
+
+tasks:
+  # Ultracite lint + format fixes
+  lint:
+    command: "bunx ultracite fix"
+    inputs:
+      - "@group(sources)"
+      - "@group(configs)"
+      - "/biome.json"
+    options:
+      runInCI: true
+
+  # Ultracite format + lint fixes
+  format:
+    command: "bunx ultracite fix"
+    inputs:
+      - "@group(sources)"
+      - "@group(configs)"
+      - "/biome.json"
+
+  # Ultracite check (no writes, for CI)
+  lint-ci:
+    command: "bunx ultracite check"
+    inputs:
+      - "@group(sources)"
+      - "@group(configs)"
+      - "/biome.json"
+    options:
+      runInCI: true
+
+  # TypeScript type checking
+  typecheck:
+    command: "bunx tsc --noEmit --pretty"
+    inputs:
+      - "@group(sources)"
+      - "types/**/*"
+      - "tsconfig.json"
+      - "tsconfig.*.json"
+      - "/tsconfig.options.json"
+    options:
+      runInCI: true

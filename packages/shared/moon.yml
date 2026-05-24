@@ -1,7 +1,7 @@
-type: 'library'
-language: 'typescript'
-stack: 'unknown'
+layer: "library"
+language: "typescript"
+stack: "backend"
 
 project:
-  name: 'shared'
-  description: 'Shared Zod schemas, types, and utilities'
+  title: "shared"
+  description: "Shared Zod schemas, types, and utilities"

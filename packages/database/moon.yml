@@ -1,4 +1,4 @@
-type: "library"
+layer: "library"
 language: "typescript"
 stack: "backend"
 
@@ -9,24 +9,24 @@ project:
 tasks:
   db-generate:
     command: "bunx drizzle-kit generate"
-    local: true
+    preset: server
     options:
       envFile: "/.env"
 
   db-migrate:
     command: "bunx drizzle-kit migrate"
-    local: true
+    preset: server
     options:
       envFile: "/.env"
 
   db-push:
     command: "bunx drizzle-kit push"
-    local: true
+    preset: server
     options:
       envFile: "/.env"
 
   db-studio:
     command: "bunx drizzle-kit studio"
-    local: true
+    preset: server
     options:
       envFile: "/.env"
