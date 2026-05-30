@@ -2,11 +2,8 @@ import { z } from "zod";
 
 export const envSchema = z.object({
   REDIS_URL: z.url(),
-  POSTGRES_HOST: z.string(),
-  POSTGRES_PORT: z.string(),
-  POSTGRES_USER: z.string(),
-  POSTGRES_PASSWORD: z.string(),
-  POSTGRES_DB: z.string(),
+  TURSO_DATABASE_URL: z.string(),
+  TURSO_AUTH_TOKEN: z.string().optional(),
 });
 
 export type EnvSchema = z.infer<typeof envSchema>;

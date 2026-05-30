@@ -1,5 +1,3 @@
-// Client exports
-
 // Re-export commonly used drizzle-orm utilities
 export {
   and,
@@ -17,6 +15,6 @@ export {
   or,
   sql,
 } from "drizzle-orm";
-export { createMigrationClient, type Database, db } from "./client";
+export { type Database, db } from "./client";
 // Schema exports
 export * from "./schema";

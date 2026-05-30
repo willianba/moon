@@ -7,7 +7,7 @@ A full-stack Bun monorepo using [moonrepo](https://moonrepo.dev) for task orches
 - **Runtime**: Bun 1.3+
 - **Monorepo**: moonrepo 1.41+
 - **Web app**: SvelteKit + Svelte 5 + Tailwind 4 + DaisyUI 5
-- **Database**: PostgreSQL 17 + Drizzle ORM
+- **Database**: SQLite / Turso (libSQL) + Drizzle ORM
 - **Queue**: Redis 7 + BullMQ
 - **Validation**: Zod 4
 - **Linting**: Biome + Ultracite
@@ -16,7 +16,7 @@ A full-stack Bun monorepo using [moonrepo](https://moonrepo.dev) for task orches
 
 - Bun 1.3+
 - Moon CLI 1.41+
-- Docker Engine with `docker compose`
+- Docker Engine with `docker compose` (for Redis)
 
 ## Setup
 
@@ -24,11 +24,12 @@ A full-stack Bun monorepo using [moonrepo](https://moonrepo.dev) for task orches
 # install dependencies
 bun install
 
-# start local postgres + redis
+# start local redis
 docker compose up -d
 
 # create local environment file then replace it with real values
 cp .env.example .env
+# for local dev, set: TURSO_DATABASE_URL=file:local.db (no auth token needed)
 ```
 
 ## Structure
@@ -42,8 +43,8 @@ apps/
   web/                  # SvelteKit app
     src/routes/         # Pages, layouts, and API endpoints
   workers/              # BullMQ workers
-packages/
-  database/             # Drizzle + PostgreSQL
+  packages/
+  database/             # Drizzle + libSQL (Turso)
   shared/               # Shared schemas, types, utilities
 ```
 

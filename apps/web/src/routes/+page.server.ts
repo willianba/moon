@@ -6,7 +6,7 @@ export const load: PageServerLoad = async () => {
   let healthy = true;
 
   try {
-    await db.execute(sql`SELECT 1`);
+    await db.run(sql`SELECT 1`);
     checks.database = "ok";
   } catch {
     checks.database = "error";
